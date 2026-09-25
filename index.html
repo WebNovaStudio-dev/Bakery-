@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Grain | Artisan Bakery</title>
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Design Tokens */
+        :root {
+            --bg-base: #F8F1E7;
+            --text-main: #2B2118;
+            --text-secondary: #6F6257;
+            --wheat: #C79A55;
+            --terracotta: #A85C3B;
+            --soft-green: #6F7B5F;
+            --card-bg: #FFFDF8;
+            --white: #FFFFFF;
+            --border-light: rgba(199, 154, 85, 0.22);
+            --shadow-subtle: 0 12px 32px rgba(43, 33, 24, 0.05);
+            --shadow-hover: 0 20px 40px rgba(43, 33, 24, 0.1);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.15;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Reusable UI Components */
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--terracotta);
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--terracotta);
+            color: var(--white);
+            padding: 0.9rem 1.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border: 1px solid var(--terracotta);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #8f4b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(168, 92, 59, 0.25);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--text-main);
+            padding: 0.9rem 1.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid var(--text-main);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--text-main);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.25rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(248, 241, 231, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        .logo span {
+            color: var(--wheat);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terracotta);
+        }
+
+        .nav-cta {
+            background-color: var(--terracotta);
+            color: var(--white) !important;
+            padding: 0.6rem 1.4rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        /* Modal Dialog */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(43, 33, 24, 0.65);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            max-width: 460px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { transform: scale(0.92) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .modal-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: var(--terracotta);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            z-index: 5;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .modal-body h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 1. Hero Section */
+        .hero {
+            padding: 9rem 8% 5rem;
+            min-height: 90vh;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            line-height: 1.08;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--terracotta);
+            font-style: italic;
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 520px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta {
+            font-size: 0.85rem;
+            color: var(--wheat);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .hero-badge-float {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            background: var(--card-bg);
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 2. Trust Strip */
+        .trust-strip {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            padding: 2.5rem 8%;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        .trust-item h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .trust-item p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* 3. The 48-Hour Journey */
+        .journey-section {
+            padding: 7rem 8%;
+            text-align: center;
+        }
+
+        .section-header {
+            max-width: 650px;
+            margin: 0 auto 3.5rem;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .timeline-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .timeline-card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            text-align: left;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--wheat);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-card .time-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* 4. Menu Section (Fresh From the Oven) */
+        .menu-section {
+            padding: 7rem 8%;
+            background-color: #F3EBDD;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.35s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .menu-thumb {
+            height: 230px;
+            overflow: hidden;
+        }
+
+        .menu-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .menu-item:hover .menu-thumb img {
+            transform: scale(1.06);
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-header-row h3 {
+            font-size: 1.5rem;
+        }
+
+        .menu-price {
+            font-weight: 700;
+            color: var(--terracotta);
+            font-size: 1.15rem;
+        }
+
+        .menu-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* 5. Baker Story */
+        .baker-section {
+            padding: 7rem 8%;
+        }
+
+        .baker-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 4.5rem;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .baker-image-box {
+            position: relative;
+        }
+
+        .baker-image-box img {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            position: relative;
+            z-index: 2;
+        }
+
+        .baker-frame {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--wheat);
+            border-radius: var(--radius-lg);
+            z-index: 1;
+        }
+
+        .baker-details h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .baker-details p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .baker-quote {
+            font-style: italic;
+            font-size: 1.35rem;
+            color: var(--text-main);
+            border-left: 3px solid var(--wheat);
+            padding-left: 1.25rem;
+            margin: 1.8rem 0;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        .batch-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 1.4rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 50px;
+            box-shadow: var(--shadow-subtle);
+            font-size: 0.85rem;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--soft-green);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid var(--soft-green);
+            animation: pulseWave 1.8s infinite;
+        }
+
+        @keyframes pulseWave {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        /* 6. Catering & Events */
+        .catering-section {
+            padding: 6.5rem 8%;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .catering-content {
+            max-width: 820px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .catering-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .catering-content p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        /* 7. Loyalty Program */
+        .loyalty-section {
+            padding: 7rem 8%;
+            background-color: #EEF3EA;
+            text-align: center;
+        }
+
+        .loyalty-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1050px;
+            margin: 0 auto 3rem;
+        }
+
+        .loyalty-card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(111, 123, 95, 0.2);
+            box-shadow: var(--shadow-subtle);
+            text-align: left;
+        }
+
+        .loyalty-card .step-marker {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--soft-green);
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .loyalty-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .loyalty-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* 8. Testimonials */
+        .testimonials-section {
+            padding: 7rem 8%;
+            text-align: center;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+            text-align: left;
+        }
+
+        .testimonial-card p {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.35rem;
+            font-style: italic;
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .testimonial-author {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* 9. Contact / Visit */
+        .contact-section {
+            padding: 7rem 8%;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .contact-info h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-detail-group {
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .contact-detail-group p {
+            margin-bottom: 0.4rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 0.9rem 1.2rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            background: var(--bg-base);
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--terracotta);
+        }
+
+        /* 10. FAQ Section */
+        .faq-section {
+            padding: 6rem 8%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.25rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-question i {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* 11. Newsletter */
+        .newsletter-section {
+            padding: 6rem 8%;
+            background-color: var(--terracotta);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .newsletter-box {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-box h3 {
+            color: var(--white);
+            font-size: 2.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .newsletter-box p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex-grow: 1;
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            background-color: var(--text-main);
+            color: var(--white);
+            border: none;
+            padding: 0 1.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #17110c;
+        }
+
+        /* 12. Footer */
+        .footer {
+            background: #1C1611;
+            color: #C0B5AB;
+            padding: 5rem 8% 2.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 3rem;
+        }
+
+        .footer-brand h2 {
+            color: var(--white);
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-brand p {
+            max-width: 320px;
+            line-height: 1.6;
+        }
+
+        .footer-col h5 {
+            color: var(--white);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-col a:hover {
+            color: var(--wheat);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.25rem;
+        }
+
+        .social-icons a {
+            color: #C0B5AB;
+            font-size: 1.15rem;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--wheat);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8C8075;
+        }
+
+        /* Mobile Sticky Footer */
+        .mobile-sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+            border-top: 1px solid var(--border-light);
+            display: none;
+            z-index: 999;
+        }
+
+        .mobile-sticky-footer .btn-primary {
+            width: 100%;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 8rem;
+                gap: 3rem;
+            }
+            .hero-text h1 { font-size: 3.2rem; }
+            .timeline-steps { grid-template-columns: 1fr; }
+            .baker-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .loyalty-grid { grid-template-columns: 1fr; }
+            .contact-container { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-bottom: 70px; }
+            .mobile-sticky-footer { display: block; }
+            .mobile-toggle { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-base);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--border-light);
+                transform: translateY(-150%);
+                transition: transform 0.35s ease;
+            }
+            .nav-links.active { transform: translateY(0); }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: 2.6rem; }
+            .newsletter-form { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modal Dialog -->
+    <div id="special-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()" aria-label="Close Special Offer">&times;</button>
+            <div class="modal-badge">Limited Batch Available Today</div>
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Honey Walnut Sourdough">
+            <div class="modal-body">
+                <h3 id="modal-title">Honey Walnut Sourdough</h3>
+                <p>Slow-fermented sourdough infused with raw wildflower honey and toasted walnuts. Baked fresh in small batches every morning.</p>
+                <a href="#contact" class="btn-primary" onclick="closeModal()">Reserve a Loaf</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">Golden Grain<span>.</span></a>
+        
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#journey">Our Process</a></li>
+            <li><a href="#menu">Our Breads</a></li>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#catering">Catering</a></li>
+            <li><a href="#contact">Visit</a></li>
+            <li><a href="#menu" class="nav-cta">Order Now</a></li>
+        </ul>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <header id="home" class="hero">
+        <div class="hero-text">
+            <span class="badge">ARTISAN BAKERY • HANDCRAFTED DAILY</span>
+            <h1>Slow Fermented. <br>Freshly Baked. <br><span>Made to Be Shared.</span></h1>
+            <p>Experience naturally fermented sourdough, stone-milled grains, and small-batch pastries crafted with patience and baked fresh every morning.</p>
+            <div class="hero-actions">
+                <a href="#menu" class="btn-primary">Order Fresh Bread</a>
+                <a href="#menu" class="btn-secondary">Explore Our Menu</a>
+            </div>
+            <div class="hero-meta">
+                48-Hour Fermentation • Hand-Shaped • Baked Fresh Daily
+            </div>
+        </div>
+        <div class="hero-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=1000" alt="Freshly baked artisan pastries">
+            <div class="hero-badge-float">
+                <i class="fa-solid fa-wheat-awn" style="color: var(--wheat); font-size: 1.4rem;"></i>
+                <div>
+                    <strong style="display:block; font-size:0.9rem;">Stone-Milled Flour</strong>
+                    <span style="font-size:0.75rem; color: var(--text-secondary);">100% Organic Local Grain</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Trust Strip -->
+    <section class="trust-strip">
+        <div class="trust-grid">
+            <div class="trust-item">
+                <h4>48-HOUR FERMENTATION</h4>
+                <p>Slow-developed flavor and natural texture</p>
+            </div>
+            <div class="trust-item">
+                <h4>STONE-MILLED GRAINS</h4>
+                <p>Carefully selected ingredients</p>
+            </div>
+            <div class="trust-item">
+                <h4>HAND-SHAPED DAILY</h4>
+                <p>Every loaf crafted in small batches</p>
+            </div>
+            <div class="trust-item">
+                <h4>FRESH FROM THE OVEN</h4>
+                <p>Baked fresh throughout the morning</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. The 48-Hour Journey -->
+    <section id="journey" class="journey-section">
+        <div class="section-header">
+            <span class="badge">PATIENCE & CRAFT</span>
+            <h2>The 48-Hour Journey</h2>
+            <p>Great bread cannot be rushed. From the first mix to the final bake, every loaf is given the time it needs to develop its character.</p>
+        </div>
+
+        <div class="timeline-steps">
+            <div class="timeline-card">
+                <div class="step-num">01 — MIX & REST</div>
+                <div class="time-tag">0 Hours</div>
+                <h3>Flour & Water</h3>
+                <p>Flour, water, starter, and salt come together before the dough begins its slow transformation.</p>
+            </div>
+
+            <div class="timeline-card">
+                <div class="step-num">02 — SLOW FERMENT</div>
+                <div class="time-tag">24 Hours</div>
+                <h3>Flavor Development</h3>
+                <p>Time develops the flavor, aroma, and open texture that define naturally fermented sourdough.</p>
+            </div>
+
+            <div class="timeline-card">
+                <div class="step-num">03 — BAKE & BLOOM</div>
+                <div class="time-tag">48 Hours</div>
+                <h3>Stone Oven Bake</h3>
+                <p>Each loaf is hand-shaped, scored, and baked until deeply golden with a crisp crust and tender crumb.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Fresh From the Oven (Menu) -->
+    <section id="menu" class="menu-section">
+        <div class="section-header">
+            <span class="badge">DAILY SELECTION</span>
+            <h2>Fresh From the Oven</h2>
+            <p>Small-batch breads and pastries, baked throughout the day.</p>
+        </div>
+
+        <div class="menu-grid">
+            <!-- 1. Signature Sourdough -->
+            <div class="menu-item">
+                <div class="menu-thumb">
+                    <img src="https://images.unsplash.com/photo-1585478259715-876a6a81fc08?auto=format&fit=crop&q=80&w=600" alt="Signature Sourdough">
+                </div>
+                <div class="menu-info">
+                    <div class="menu-header-row">
+                        <h3>Signature Sourdough</h3>
+                        <span class="menu-price">$8.50</span>
+                    </div>
+                    <p>Our classic naturally fermented loaf with a crisp crust and airy, open crumb.</p>
+                </div>
+            </div>
+
+            <!-- 2. Honey Walnut Sourdough -->
+            <div class="menu-item">
+                <div class="menu-thumb">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" alt="Honey Walnut Sourdough">
+                </div>
+                <div class="menu-info">
+                    <div class="menu-header-row">
+                        <h3>Honey Walnut Sourdough</h3>
+                        <span class="menu-price">$10.50</span>
+                    </div>
+                    <p>Slow-fermented sourdough with wildflower honey and toasted walnuts.</p>
+                </div>
+            </div>
+
+            <!-- 3. Dark Rye -->
+            <div class="menu-item">
+                <div class="menu-thumb">
+                    <img src="https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&q=80&w=600" alt="Dark Rye">
+                </div>
+                <div class="menu-info">
+                    <div class="menu-header-row">
+                        <h3>Dark Rye</h3>
+                        <span class="menu-price">$9.00</span>
+                    </div>
+                    <p>A rich, hearty rye loaf with deep flavor and a satisfying crust.</p>
+                </div>
+            </div>
+
+            <!-- 4. Buttery Croissant -->
+            <div class="menu-item">
+                <div class="menu-thumb">
+                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600" alt="Buttery Croissant">
+                </div>
+                <div class="menu-info">
+                    <div class="menu-header-row">
+                        <h3>Buttery Croissant</h3>
+                        <span class="menu-price">$4.00</span>
+                    </div>
+                    <p>Golden, flaky layers made with cultured butter and baked fresh each morning.</p>
+                </div>
+            </div>
+
+            <!-- 5. Seasonal Danish -->
+            <div class="menu-item">
+                <div class="menu-thumb">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" alt="Seasonal Danish">
+                </div>
+                <div class="menu-info">
+                    <div class="menu-header-row">
+                        <h3>Seasonal Danish</h3>
+                        <span class="menu-price">$5.50</span>
+                    </div>
+                    <p>A rotating pastry featuring the best seasonal fruits and sweet custard.</p>
+                </div>
+            </div>
+
+            <!-- 6. Morning Bun -->
+            <div class="menu-item">
+                <div class="menu-thumb">
+                    <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&q=80&w=600" alt="Morning Bun">
+                </div>
+                <div class="menu-info">
+                    <div class="menu-header-row">
+                        <h3>Morning Bun</h3>
+                        <span class="menu-price">$4.50</span>
+                    </div>
+                    <p>Soft, caramelized, and finished with a delicate touch of cinnamon and spice.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="#contact" class="btn-primary">View Full Menu & Daily Specials &rarr;</a>
+        </div>
+    </section>
+
+    <!-- 5. Baker Story -->
+    <section id="about" class="baker-section">
+        <div class="baker-grid">
+            <div class="baker-image-box">
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop" alt="Baker shaping sourdough[cite: 2]">
+                <div class="baker-frame"></div>
+            </div>
+            <div class="baker-details">
+                <span class="badge">THE HANDS BEHIND THE FLOUR</span>
+                <h2>Meet Julian Vane</h2>
+                <p>Behind every loaf is a person who cares about the details. At Golden Grain, our bread is shaped by hand, fermented slowly, and baked with the belief that simple ingredients deserve time, attention, and respect[cite: 2].</p>
+                
+                <blockquote class="baker-quote">
+                    “Bread is a living thing. Give it time, and it gives something back.”
+                    <span style="display:block; font-size:0.9rem; margin-top:0.4rem; font-style:normal; color:var(--text-secondary);">&mdash; Julian Vane[cite: 2]</span>
+                </blockquote>
+
+                <div class="batch-pill">
+                    <div class="pulse-dot"></div>
+                    <span>TODAY'S BAKE: <strong>Honey Walnut Sourdough</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Catering & Events -->
+    <section id="catering" class="catering-section">
+        <div class="catering-content">
+            <span class="badge">FOR GATHERINGS BIG & SMALL</span>
+            <h2>Bring Better Bread to the Table</h2>
+            <p>From office breakfasts to weekend celebrations, we create fresh-baked selections for gatherings of all kinds. Custom bread boxes, pastry trays, celebration orders, and wholesale options are available.</p>
+            <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+                <a href="#contact" class="btn-primary">Plan an Order &rarr;</a>
+                <a href="#contact" class="btn-secondary">Ask About Catering</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Crumb Collective Loyalty Program -->
+    <section id="loyalty" class="loyalty-section">
+        <div class="section-header">
+            <span class="badge" style="color:var(--soft-green);">LOYALTY PERKS</span>
+            <h2>Welcome to the Crumb Collective</h2>
+            <p>Good bread should come with good rewards. Earn grains every time you stop in for a loaf.</p>
+        </div>
+
+        <div class="loyalty-grid">
+            <div class="loyalty-card">
+                <div class="step-marker">01 — EARN CRUMBS</div>
+                <h3>Collect Points</h3>
+                <p>Collect points every time you order in-store or online with your member card.</p>
+            </div>
+
+            <div class="loyalty-card">
+                <div class="step-marker">02 — UNLOCK REWARDS</div>
+                <h3>Bakery Favorites</h3>
+                <p>Turn your crumbs into free morning coffee, fresh baguettes, and bakery favorites.</p>
+            </div>
+
+            <div class="loyalty-card">
+                <div class="step-marker">03 — MEMBER PERKS</div>
+                <h3>Early Access</h3>
+                <p>Get early access to seasonal bakes, holiday pies, and exclusive weekend batches.</p>
+            </div>
+        </div>
+
+        <a href="#contact" class="btn-primary" style="background-color: var(--soft-green); border-color: var(--soft-green);">Join the Collective &rarr;</a>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+            Already a member? <a href="#contact" style="color: var(--soft-green); font-weight:600;">Check Your Balance[cite: 2]</a>
+        </p>
+    </section>
+
+    <!-- 8. Testimonials -->
+    <section class="testimonials-section">
+        <div class="section-header">
+            <span class="badge">OUR COMMUNITY</span>
+            <h2>What Our Locals Say</h2>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>“The entire journey felt effortless. The sourdough crust is absolute perfection every single morning.”</p>
+                <div class="testimonial-author">&mdash; James W., Neighborhood Resident[cite: 2]</div>
+            </div>
+            <div class="testimonial-card">
+                <p>“Their croissants transport me straight to Paris. A Saturday morning tradition for my family.”</p>
+                <div class="testimonial-author">&mdash; Elena R., Verified Customer[cite: 2]</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Contact / Visit Our Hearth -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <span class="badge">COME VISIT US</span>
+                <h2>Visit Our Hearth</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Come for the aroma. Stay for the bread.</p>
+                
+                <div class="contact-detail-group">
+                    <p><strong>Address:</strong> 123 Bakers Lane, Flour City[cite: 2]</p>
+                    <p><strong>Hours:</strong> Open Daily · 6:00 AM — 4:00 PM[cite: 2]</p>
+                    <p><strong>Email:</strong> hello@goldengrain.com[cite: 2]</p>
+                </div>
+
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Questions, custom orders, or event requests? Send us a message and our team will get back to you.
+                </p>
+            </div>
+
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for reaching out! We will be in touch shortly.');">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="4" placeholder="Tell us about your custom bread order, event, or catering request..."></textarea>
+                <button type="submit" class="btn-primary">Send Inquiry</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 10. FAQ Section -->
+    <section class="faq-section">
+        <div class="section-header">
+            <span class="badge">NEED TO KNOW</span>
+            <h2>Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" type="button" onclick="toggleFaq(this)">
+                    <span>Do you accept same-day orders?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Yes. Availability depends on the day's bake and remaining counter stock. We recommend arriving early for signature loaves.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button" onclick="toggleFaq(this)">
+                    <span>Can I place a custom order?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Yes. Contact us for custom breads, pastry boxes, and celebration orders at least 48 hours in advance.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button" onclick="toggleFaq(this)">
+                    <span>Do you offer catering?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    We offer bakery selections, breakfast boxes, and artisanal sandwich bread for meetings, celebrations, and gatherings.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button" onclick="toggleFaq(this)">
+                    <span>Do you offer wholesale?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Wholesale partnerships are available for selected cafes, restaurants, and grocers throughout the region.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button" onclick="toggleFaq(this)">
+                    <span>How should I store my bread?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    For best texture, store cut-side down on a cutting board or inside a breathable bread bag at room temperature. Never refrigerate sourdough.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button" onclick="toggleFaq(this)">
+                    <span>Do you offer workshops?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Ask our team about upcoming weekend sourdough workshops, starter maintenance sessions, and seasonal masterclasses.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. Newsletter -->
+    <section class="newsletter-section">
+        <div class="newsletter-box">
+            <h3>Join the Bread Club</h3>
+            <p>Get notified the moment our specialty batches are pulled from the stone oven[cite: 2].</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Welcome to the Bread Club!');">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Mobile Sticky Footer CTA -->
+    <div class="mobile-sticky-footer">
+        <a href="#menu" class="btn-primary">Order Fresh Bread Now</a>
+    </div>
+
+    <!-- 12. Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>Golden Grain<span>.</span></h2>
+                <p>Crafting patience into every crumb with natural sourdough, organic stone-milled grains, and handcrafted dedication.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h5>EXPLORE</h5>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#journey">Our Process</a></li>
+                    <li><a href="#menu">Our Breads</a></li>
+                    <li><a href="#about">Our Story</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>COMMUNITY</h5>
+                <ul>
+                    <li><a href="#catering">Wholesale</a></li>
+                    <li><a href="#contact">Workshops</a></li>
+                    <li><a href="#loyalty">Crumb Collective</a></li>
+                    <li><a href="#contact">Events & Catering</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>VISIT US</h5>
+                <ul>
+                    <li>123 Bakers Lane[cite: 2]</li>
+                    <li>Flour City[cite: 2]</li>
+                    <li>6:00 AM — 4:00 PM[cite: 2]</li>
+                    <li>hello@goldengrain.com[cite: 2]</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 WebNova Studio · RR Web Designers · All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Consolidated JavaScript -->
+    <script>
+        // Lucide Icons init
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+        // Mobile Menu Navigation
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Modal Functionality
+        const modal = document.getElementById('special-modal');
+
+        function openModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside box
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // FAQ Accordion Handler
+        function toggleFaq(button) {
+            const item = button.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Single window load listener with session storage check
+        window.addEventListener('load', () => {
+            if (!sessionStorage.getItem('goldenGrainSpecialShown')) {
+                setTimeout(() => {
+                    openModal();
+                    sessionStorage.setItem('goldenGrainSpecialShown', 'true');
+                }, 4500);
+            }
+        });
+    </script>
+</body>
+</html>
